@@ -344,16 +344,12 @@ helper_finish_cleanup() {
 	if flag fetch; then
 		git push "$ORIGIN" ":refs/heads/$BRANCH"
 	fi
-	
-	
-	if noflag keep; then
-		if flag force_delete; then
-			git branch -D "$BRANCH"
-		else
-			git branch -d "$BRANCH"
-		fi
-	fi
 
+	# create remote branch
+	git push "$ORIGIN" "$BRANCH:refs/heads/$BRANCH"
+	git fetch -q "$ORIGIN"
+
+	
 	echo
 	echo "Summary of actions:"
 	echo "- The feature branch '$BRANCH' was merged into '$DEVELOP_BRANCH'"
